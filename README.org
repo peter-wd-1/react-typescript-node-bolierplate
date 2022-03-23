@@ -1,0 +1,55 @@
+#+TITLE: Nodejs + Typescript Project Setup And Emacs
+
+* Introduction
+This is my personal setup for TS project with technology stacks beflow:
+- [X] React
+- [X] Emacs
+- [X] Nodejs
+- [X] Typescript
+- [X] Jest
+- [X] ESlint w/ Prettier
+- [ ] Docker : on the way to deliver!
+- [X] Git Actions/CI for checking above setup
+
+* Setting Emacs IDE
+All setup is almost similar with setup [[https://github.com/peter-wd-1/nodents-bolierplate][here]] without the fact that It should use =typescript-mode= with =web-mode=.
+Also Linting configuration is also slightly different.
+* Testing
+- jest
+  - unit test
+    =yarn run test:unit=
+  - test with coverage
+    =yarn run test:coverage=
+  - jest linting setup
+    #+begin_src javascript
+  module.exports = {
+    coverageReporters: ['json', 'json-summary', 'text', 'lcov', 'clover'],
+    moduleDirectories: ['node_modules', 'src', '<rootDir>'],
+    moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
+    moduleNameMapper: {
+      '^@app/(.*)$': '<rootDir>/src/$1',
+    },
+    preset: 'ts-jest',
+    roots: ['__test__'],
+    testEnvironment: 'node',
+    transform: {
+      '^.+\\.(ts|tsx)?$': 'ts-jest',
+    },
+  }
+    #+end_src
+    Have to setup =moduleNameMapper= to reflect a =path= setup in =tsconfig.json=
+    #+begin_src json
+      "paths": {
+        "@app/*": ["./src/*"]
+      },
+    #+end_src
+    The reason I included test file in compile process is to use this absolute path and LSP autocompletion.
+
+* Linting
+- Eslint
+  - Run =yarn run lint=
+  - =.eslintrc.cjs= file setup
+- Connect =prettierrc.js= setup with middleware =.prettier.mjs=
+
+* Developing
+Run =yarn run dev=
