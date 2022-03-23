@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/register": "^7.17.7",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -11,13 +14,16 @@
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
     "express": "^4.17.3",
+    "ignore-styles": "^5.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
+    "ts-node": "^10.7.0",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
+    "postinstall": "mkdir -p build-ssr && link-module-alias",
     "lint": "eslint --ext ts",
     "format:ts": "yarn lint:ts --fix",
     "format": "yarn lint:code . --fix",
@@ -28,27 +34,11 @@
     "test:integration:coverage": "yarn test:coverage src/__test__/integration",
     "test:ci": "yarn test:coverage --ci --reporters='jest-junit'",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "tsc -p tsconfig.server.json && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "eject": "react-scripts eject",
+    "ssr": "node server/index.js",
+    "link-module-alias": "link-module-alias"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
@@ -64,7 +54,23 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "jest-junit": "^13.0.0",
+    "link-module-alias": "^1.2.0",
     "prettier": "^2.6.0",
     "prettier-eslint": "^13.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "_moduleAliases": {
+    "@app": "build-ssr"
   }
 }

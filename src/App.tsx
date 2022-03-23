@@ -1,5 +1,5 @@
 import React from 'react'
-import { a } from 'contval/constVal'
+import { a } from '@app/contval/constVal'
 import logo from './logo.svg'
 import './App.css'
 
