@@ -28,9 +28,8 @@ jobs:
           JEST_JUNIT_OUTPUT: 'reports/unit.xml'
         run: |
           yarn test:coverage \
-          --ci \
           --coverageDirectory ./reports/unit-coverage \
-          __test__/unit
+          src/__test__/unit
       - name: Lint
         run: yarn lint
 
