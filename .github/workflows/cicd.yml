@@ -1,15 +1,15 @@
-name: CI
+name: CICD
 
-on: [push]
+on:
+  push:
+    branches: ['main']
 
 jobs:
-  build:
+  CI:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [16.9.1]
-
     steps:
       - uses: actions/checkout@v1
 
@@ -24,10 +24,6 @@ jobs:
           CI: true
 
       - name: Unit Test
-        # run: |
-        #   yarn test:ci \
-        #   --coverageDirectory ./reports/unit-coverage \
-        #   __test__/unit
         env:
           JEST_JUNIT_OUTPUT: 'reports/unit.xml'
         run: |
@@ -35,49 +31,32 @@ jobs:
           --ci \
           --coverageDirectory ./reports/unit-coverage \
           __test__/unit
-
-      # - name: Upload Unit Test Coverage To Codecov
-      #   uses: codecov/codecov-action@v1.0.2
-      #   with:
-      #     token: ${{secrets.CODECOV_TOKEN}}
-      #     file: reports/unit-coverage/*.json
-      #     flags: unit
-
-      # - name: Integration Test
-      #   run: |
-      #     yarn test:ci \
-      #     --coverageDirectory ./reports/integration-coverage \
-      #     test/integration
-      #   env:
-      #     JEST_JUNIT_OUTPUT: 'reports/integration.xml'
-
-      # - name: Upload Integration Test Coverage To Codecov
-      #   uses: codecov/codecov-action@v1.0.2
-      #   with:
-      #     token: ${{secrets.CODECOV_TOKEN}}
-      #     file: reports/integration-coverage/*.json
-      #     flags: integration
-
       - name: Lint
-        # run: yarn lint:code:ci --output-file ./reports/lint.xml && yarn lint:md .
         run: yarn lint
 
       - name: Build
-        # run: yarn lint:code:ci --output-file ./reports/lint.xml && yarn lint:md .
-        run: yarn build
+        run: yarn run build
+  CD:
+    needs: CI
+    runs-on: ubuntu-latest
 
-      # - name: ConfigureAWS
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: us-east-1
+    strategy:
+      matrix:
+        node-version: [16.9.1]
 
-      # - name: Deploy
-      #   id: deploy
-      #   run: |
-      #     aws deploy {} \
-      #     --application-name {} \
-      #     --deployment-group-name {} \
-      #     --deployment-config-name {} \
-      #     --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+    # steps:
+    #   - name: ConfigureAWS
+    #     uses: aws-actions/configure-aws-credentials@v1
+    #     with:
+    #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #       aws-region: {}
+
+    #   - name: Deploy
+    #     id: deploy
+    #     run: |
+    #       aws deploy create-deployment \
+    #       --application-name {} \
+    #       --deployment-group-name {} \
+    #       --deployment-config-name {} \
+    #       --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
