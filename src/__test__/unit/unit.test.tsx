@@ -1,4 +1,4 @@
-import a from '@app/App'
+import a from 'App'
 
 console.log(a)
 

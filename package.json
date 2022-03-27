@@ -77,6 +77,6 @@
     ]
   },
   "_moduleAliases": {
-    "@app": "src/"
+    "@app": "build-ssr"
   }
 }
