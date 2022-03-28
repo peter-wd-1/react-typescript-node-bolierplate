@@ -1,0 +1,4 @@
+[submodule "lib/share-module"]
+	path = lib/share-module
+	url = https://github.com/peter-wd-1/cli.git
+	branch = master
