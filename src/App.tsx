@@ -6,7 +6,10 @@ function App() {
     <div className='App'>
       <header className='App-header'>
         <p>Import test {a}</p>
-        <p>This is bolierplate for react typescript: addup the change</p>
+        <p>
+          This is bolierplate for react typescript: addup the change: main core
+          change
+        </p>
       </header>
     </div>
   )
